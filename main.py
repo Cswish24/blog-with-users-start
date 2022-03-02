@@ -18,7 +18,7 @@ ckeditor = CKEditor(app)
 Bootstrap(app)
 
 ##CONNECT TO DB
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL1")
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL1", 'sqlite:///blog.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
@@ -60,7 +60,7 @@ class Comments(db.Model):
     post_id = db.Column(db.Integer, db.ForeignKey('blog_posts.id'))
     comment_post = relationship("BlogPost", back_populates="comments")
 
-db.create_all()
+# db.create_all()
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -209,4 +209,4 @@ def delete_post(post_id):
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5000)
+    app.run(debug=True)
